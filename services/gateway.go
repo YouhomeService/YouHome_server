@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	//"time"
 	"net/url"
 	"io/ioutil"
 )
