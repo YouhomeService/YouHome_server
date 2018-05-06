@@ -1,5 +1,5 @@
 # YouHome-back-end
 
 后端开发仓库，包括
-* 文档
-* 代码
+* docs：api文档等
+* services：各个微服务的代码等
