@@ -1,6 +1,6 @@
 # YouHome-back-end
 
-## This repository include:
+## The repository includes:
 * docs：api文档等
 * services：各个微服务的代码等
 
