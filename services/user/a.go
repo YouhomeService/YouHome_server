@@ -7,7 +7,6 @@ import (
 	"strings"
 	"io/ioutil"
 	"bytes"
-	"encoding/json"
 )
 
 func f(w http.ResponseWriter, r *http.Request) {
@@ -32,12 +31,14 @@ func f(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "this is user service.Method: POST."+string(re)) //输出到客户端的信息
 	}
 
+	/*
 	data := struct{
 		UserId string `json:"userId"`
 		UserName string `json:"userName"`
 	}{"15331181","liangfeng"}
 	buf ,_:= json.Marshal(data)
 	fmt.Fprintln(w,string(buf))
+	 */
 	
 }
 

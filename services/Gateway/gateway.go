@@ -12,7 +12,7 @@ import (
 )
 
 var host = "http://127.0.0.1"
-var userService = host + ":9091"
+var userService = "http://172.18.156.180:8080"//host + ":9091"
 var deviceService = host + ":9092"
 var sceneService = host + ":9093"
 
@@ -135,7 +135,8 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 
 		fmt.Println(string(data))
 
-		resp, err := http.Post(userService+"/v1/users?userId="+userId,"application/json",bytes.NewBuffer(data))
+
+		resp, err := http.Post(userService+"/v1/users/userName","application/json",bytes.NewBuffer(data))
 		checkError(err)
 
 		body, err := ioutil.ReadAll(resp.Body)
