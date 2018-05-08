@@ -26,10 +26,10 @@ func deleteScene(id string){
 	checkErr(err)
 	fmt.Println(string(body))
 }
-func login(){
+func login(userId string){
 	user := struct{
 		UserId string `json:"userId"`
-	}{"0613"}
+	}{userId}
 	userJson ,err := json.Marshal(user)
 	checkErr(err)
 	resp, err := http.Post(address+"/user/login","application/json",bytes.NewBuffer(userJson))
@@ -38,11 +38,11 @@ func login(){
 	checkErr(err)
 	fmt.Println(string(body))
 }
-func createScene(){
+func createScene(userId,sceneName string){
 	scene := struct {
 		UserId string `json:"userId"`
 		SceneName string `json:"sceneName"`
-	}{"0613","room"}
+	}{userId,sceneName}
 	sceneJson,err := json.Marshal(scene)
 	checkErr(err)
 	resp, err := http.Post(address+"/scene/create","application/json",bytes.NewBuffer(sceneJson))
@@ -51,8 +51,8 @@ func createScene(){
 	checkErr(err)
 	fmt.Println(string(body))
 }
-func getAllScene(){
-	resp, err := http.Get(address + "/scene/all?userId=0613")
+func getAllScene(userId string){
+	resp, err := http.Get(address + "/scene/all?userId="+userId)
 	checkErr(err)
 	body, err := ioutil.ReadAll(resp.Body)
 	checkErr(err)
@@ -65,11 +65,11 @@ func getUserInfo(userId string){
 	checkErr(err)
 	fmt.Println(string(body))
 }
-func changeUserInfo(){
+func changeUserInfo(userId,userName string){
 	temp := struct {
 		UserId string `json:"userId"`
 		UserName string `json:"userName"`
-	}{"1533","liangfeng"}
+	}{userId,userName}
 	buf,err := json.Marshal(temp)
 	checkErr(err)
 	resp, err := http.Post(address + "/user","application/json",bytes.NewBuffer(buf))
@@ -77,28 +77,19 @@ func changeUserInfo(){
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
 }
-func main() {
-
-/*
-temp := struct{
-		SceneId string `json:"sceneId"`
-	}{"7"}
-	tempJson ,_:= json.Marshal(temp)
-	resp, err = http.Post(address + "/scene/delete","application/json",bytes.NewBuffer(tempJson))
-	checkErr(err)
-	body,_ = ioutil.ReadAll(resp.Body)
-	fmt.Println(string(body))
- */
- 	changeUserInfo()
- 	getUserInfo("1533")
-	//getAllScene()
-	//√deleteScene("7")
-}
 func checkErr(err error){
 	if err != nil{
 		panic(err)
 	}
 }
+func main() {
+
+ 	//changeUserInfo("")
+ 	getUserInfo("1533")
+	//getAllScene()
+	//√deleteScene("7")
+}
+
 
 
 
