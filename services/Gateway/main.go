@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
-	"Youhome/services/Gateway/service"
+	"YouHome_server/services/Gateway/service"
 )
 
 func main() {

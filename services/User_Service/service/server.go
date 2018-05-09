@@ -3,10 +3,10 @@ package service
 import (
 	"net/http"
 	"fmt"
-	"YouHome-back-end/services/userInfo/entities"
 	"encoding/json"
 	"io/ioutil"
 
+	"YouHome_server/services/User_Service/entities"
 )
 
 func LoadRouters() {

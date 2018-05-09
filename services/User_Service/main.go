@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-	"YouHome-back-end/services/userInfo/service"
+	"YouHome_server/services/User_Service/service"
 	"log"
 )
 

@@ -1,10 +1,10 @@
 package main
 
 import (
-	"Youhome/services/Scene/service"
 	"net/http"
 	"log"
 	"fmt"
+	"YouHome_server/services/Scene_Service/service"
 )
 
 func main() {

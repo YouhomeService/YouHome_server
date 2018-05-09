@@ -2,8 +2,8 @@ package main
 
 import (
 	"net/http"
-	"YouHome-back-end/services/deviceInfo/service"
 	"log"
+	"YouHome_server/services/Device_Service/service"
 )
 
 func main() {
