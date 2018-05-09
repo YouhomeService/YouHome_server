@@ -10,7 +10,7 @@ import (
 func main() {
 	service.LoadRoute()
 
-	err := http.ListenAndServe(":9094", nil) //设置监听的端口
+	err := http.ListenAndServe(":9093", nil) //设置监听的端口
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}else{
