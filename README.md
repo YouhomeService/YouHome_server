@@ -1,4 +1,4 @@
-# YouHome-back-end
+# YouHome_server
 
 ## The repository includes:
 * docs：api文档等
