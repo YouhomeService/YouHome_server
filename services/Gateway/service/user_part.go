@@ -56,11 +56,12 @@ func userLoginHandler(w http.ResponseWriter, r *http.Request){
 	data , err:= ioutil.ReadAll(r.Body)
 	checkError(err)
 
-	_, err = http.Post(userService+"/v1/users","application/json",bytes.NewBuffer(data))
+	resp, err := http.Post(userService+"/v1/users","application/json",bytes.NewBuffer(data))
 	checkError(err)
 
+	body, err := ioutil.ReadAll(resp.Body)
 	checkError(err)
 
-	fmt.Fprint(w, http.StatusOK)
+	fmt.Fprint(w, string(body))
 
 }

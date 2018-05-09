@@ -26,11 +26,13 @@ func deleteScene(id string){
 	checkErr(err)
 	fmt.Println(string(body))
 }
-func login(userId string){
+func login(code string){
 	user := struct{
-		UserId string `json:"userId"`
-	}{userId}
+		Code string `json:"code"`
+	}{code}
+	//fmt.Println(string(user))
 	userJson ,err := json.Marshal(user)
+	fmt.Println(string(userJson))
 	checkErr(err)
 	resp, err := http.Post(address+"/user/login","application/json",bytes.NewBuffer(userJson))
 	checkErr(err)
@@ -82,11 +84,25 @@ func checkErr(err error){
 		panic(err)
 	}
 }
+func TestWechatApi(){
+	//https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code
+	resp, err := http.Get("https://api.weixin.qq.com/sns/jscode2session?appid=wx394f9cc0f949d50b&secret=0346967483b301c189254bef576b1091&js_code=JSCODE&grant_type=authorization_code")
+	checkErr(err)
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	checkErr(err)
+	fmt.Println(string(body))
+}
 func main() {
 
  	//changeUserInfo("")
- 	getUserInfo("1533")
-	//getAllScene()
+ 	//getUserInfo("1533")
+ 	//createScene("1533","bedRoom")
+	//getAllScene("1533")
+	//TestWechatApi()
+
+	//login("liziqiaosb")
 	//√deleteScene("7")
 }
 
