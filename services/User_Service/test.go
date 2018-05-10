@@ -14,12 +14,12 @@ func main() {
 		data := struct {
 			UserId string `json:"userId"`
 			UserName string `json:"userName"`
-		}{"abcd","lizq"}
+		}{"1533","lizq"}
 		buf, _ := json.Marshal(data)
-		res, err := http.Post("http://127.0.0.1:8080/v1/users/userName",
+		res, err := http.Post("http://127.0.0.1:9091/v1/users/userName",
 			"application/json", bytes.NewBuffer(buf))
 
-		res1, err1 := http.Get("http://127.0.0.1:8080/v1/users?userId=abc")
+		res1, err1 := http.Get("http://127.0.0.1:9091/v1/users?userId=abc")
 
 		if err == nil {
 			fmt.Println("Success")

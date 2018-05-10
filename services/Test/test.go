@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 )
 
-var address string = "http://localhost:8088"
+var address string = "http://123.207.55.27:8088"
 func deleteScene(id string){
 	data := struct {
 		SceneId string `json:"sceneId"`
@@ -67,7 +67,17 @@ func getUserInfo(userId string){
 	checkErr(err)
 	fmt.Println(string(body))
 }
-func changeUserInfo(userId,userName string){
+func getDeviceOfScene(sceneId string){
+	//device/all?sceneId=room
+	res,err := http.Get(address + "/device/all?sceneId=" + sceneId)
+	checkErr(err)
+
+	body,err := ioutil.ReadAll(res.Body)
+	checkErr(err)
+
+	fmt.Println(string(body))
+}
+func updateUserInfo(userId,userName string){
 	temp := struct {
 		UserId string `json:"userId"`
 		UserName string `json:"userName"`
@@ -96,14 +106,21 @@ func TestWechatApi(){
 }
 func main() {
 
- 	//changeUserInfo("")
- 	//getUserInfo("1533")
- 	//createScene("1533","bedRoom")
-	//getAllScene("1533")
-	//TestWechatApi()
+	fmt.Println("为用户创建场景")
+	createScene("1533","Room")
 
-	//login("liziqiaosb")
-	//√deleteScene("7")
+	fmt.Println("获取该用户所有场景：")
+	getAllScene("1533")
+
+	fmt.Println("删除场景")
+	deleteScene("5")
+
+	fmt.Println("删除后，获取所有场景")
+	getAllScene("1533")
+
+	fmt.Println("获取场景所有设备")
+	getDeviceOfScene("1")
+
 }
 
 
