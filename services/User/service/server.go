@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"YouHome_server/services/User_Service/entities"
+	"YouHome_server/services/User/entities"
 )
 
 func LoadRouters() {

@@ -2,14 +2,14 @@ package main
 
 import (
 	"net/http"
+	"YouHome_server/services/User/service"
 	"log"
-	"YouHome_server/services/Device_Service/service"
 )
 
 func main() {
 	service.LoadRouters()
 
-	err := http.ListenAndServe(":9092",nil)
+	err := http.ListenAndServe(":9091",nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}

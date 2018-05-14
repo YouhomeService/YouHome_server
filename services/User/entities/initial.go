@@ -9,8 +9,8 @@ import (
 var mydb *sql.DB
 
 func init() {
-	db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/youhome?charset=utf8&parseTime=true")
-	//db, err := sql.Open("mysql", "root:root@tcp(123.207.55.27:3306)/youhome?charset=utf8&parseTime=true")
+	//db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/youhome?charset=utf8&parseTime=true")
+	db, err := sql.Open("mysql", "root:root@tcp(123.207.55.27:3306)/youhome?charset=utf8&parseTime=true")
 	if err != nil {
 		panic(err)
 	}

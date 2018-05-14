@@ -2,7 +2,7 @@ package service
 
 import (
 	"net/http"
-	"YouHome_server/services/Device_Service/entities"
+	"YouHome_server/services/Device/entities"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"

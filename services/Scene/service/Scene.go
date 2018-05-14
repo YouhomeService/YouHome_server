@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"encoding/json"
 	"io/ioutil"
-	"YouHome_server/services/Scene_Service/entities"
+	"YouHome_server/services/Scene/entities"
 )
 
 
