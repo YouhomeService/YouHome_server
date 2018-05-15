@@ -6,9 +6,14 @@ import (
     "io/ioutil"
 	"bytes"
 	"encoding/json"
+	"crypto/tls"
 )
 
-var address string = "http://123.207.55.27:8088"
+var address string = "https://123.207.55.27:8088"
+var tr = &http.Transport{
+TLSClientConfig:    &tls.Config{InsecureSkipVerify: true},
+}
+var client = &http.Client{Transport: tr}
 func deleteScene(id string){
 	data := struct {
 		SceneId string `json:"sceneId"`
@@ -16,7 +21,7 @@ func deleteScene(id string){
 	buf , _ := json.Marshal(data)///scene/delete
 	//fmt.Println(string(buf))
 	//resp, err = http.Post(address + "/scene/delete","application/json",bytes.NewBuffer(tempJson))
-	resp, err := http.Post(address+"/scene/delete","application/json",bytes.NewBuffer(buf))
+	resp, err := client.Post(address+"/scene/delete","application/json",bytes.NewBuffer(buf))
 	if err != nil{
 		fmt.Println(err)
 		return
@@ -34,7 +39,7 @@ func login(code string){
 	userJson ,err := json.Marshal(user)
 	fmt.Println(string(userJson))
 	checkErr(err)
-	resp, err := http.Post(address+"/user/login","application/json",bytes.NewBuffer(userJson))
+	resp, err := client.Post(address+"/user/login","application/json",bytes.NewBuffer(userJson))
 	checkErr(err)
 	body,err := ioutil.ReadAll(resp.Body)
 	checkErr(err)
@@ -47,21 +52,21 @@ func createScene(userId,sceneName string){
 	}{userId,sceneName}
 	sceneJson,err := json.Marshal(scene)
 	checkErr(err)
-	resp, err := http.Post(address+"/scene/create","application/json",bytes.NewBuffer(sceneJson))
+	resp, err := client.Post(address+"/scene/create","application/json",bytes.NewBuffer(sceneJson))
 	checkErr(err)
 	body, err := ioutil.ReadAll(resp.Body)
 	checkErr(err)
 	fmt.Println(string(body))
 }
 func getAllScene(userId string){
-	resp, err := http.Get(address + "/scene/all?userId="+userId)
+	resp, err := client.Get(address + "/scene/all?userId="+userId)
 	checkErr(err)
 	body, err := ioutil.ReadAll(resp.Body)
 	checkErr(err)
 	fmt.Println(string(body))
 }
 func getUserInfo(userId string){
-	resp, err := http.Get(address+"/user?userId="+userId)
+	resp, err := client.Get(address+"/user?userId="+userId)
 	checkErr(err)
 	body, err := ioutil.ReadAll(resp.Body)
 	checkErr(err)
@@ -69,7 +74,7 @@ func getUserInfo(userId string){
 }
 func getDeviceOfScene(sceneId string){
 	//device/all?sceneId=room
-	res,err := http.Get(address + "/device/all?sceneId=" + sceneId)
+	res,err := client.Get(address + "/device/all?sceneId=" + sceneId)
 	checkErr(err)
 
 	body,err := ioutil.ReadAll(res.Body)
@@ -84,7 +89,7 @@ func updateUserInfo(userId,userName string){
 	}{userId,userName}
 	buf,err := json.Marshal(temp)
 	checkErr(err)
-	resp, err := http.Post(address + "/user","application/json",bytes.NewBuffer(buf))
+	resp, err := client.Post(address + "/user","application/json",bytes.NewBuffer(buf))
 	checkErr(err)
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
@@ -106,20 +111,7 @@ func TestWechatApi(){
 }
 func main() {
 
-	fmt.Println("为用户创建场景")
-	createScene("1533","Room")
 
-	fmt.Println("获取该用户所有场景：")
-	getAllScene("1533")
-
-	fmt.Println("删除场景")
-	deleteScene("5")
-
-	fmt.Println("删除后，获取所有场景")
-	getAllScene("1533")
-
-	fmt.Println("获取场景所有设备")
-	getDeviceOfScene("1")
 
 }
 
