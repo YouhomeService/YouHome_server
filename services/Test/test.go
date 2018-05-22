@@ -112,7 +112,7 @@ func TestWechatApi(){
 func main() {
 
 
-	res,err:= client.Get( "http://localhost:8088/v1/users?userId=1533")
+	res,err:= client.Get( "https://localhost/v1/users?userId=1533")
 	checkErr(err)
 	body, _ := ioutil.ReadAll(res.Body)
 	fmt.Println(string(body))

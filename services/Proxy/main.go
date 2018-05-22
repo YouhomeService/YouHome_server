@@ -20,8 +20,8 @@ func NewMultipleHostsReverseProxy() *httputil.ReverseProxy {
 		req.URL.Scheme = "http"
 		//req.URL.Path = target.Path
 		path := req.URL.Path
-		data := strings.Split(path,"/")
-		service := strings.Split(data[2],"?")[0]
+		service := strings.Split(path,"/")[2]
+		//service := data[2]//strings.Split(data[2],"?")[0]
 		switch service{
 		case "users":
 			req.URL.Host = userService
@@ -34,6 +34,7 @@ func NewMultipleHostsReverseProxy() *httputil.ReverseProxy {
 		fmt.Println(req.URL.Scheme)
 		fmt.Println(req.URL.Host)
 		fmt.Println(req.URL.Path)
+		fmt.Println(service)
 	}
 	return &httputil.ReverseProxy{Director: director}
 }
