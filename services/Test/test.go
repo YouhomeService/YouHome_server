@@ -112,6 +112,26 @@ func TestWechatApi(){
 func main() {
 
 
+	res,err:= client.Get( "http://localhost:8088/v1/users?userId=1533")
+	checkErr(err)
+	body, _ := ioutil.ReadAll(res.Body)
+	fmt.Println(string(body))
+
+
+
+	/*
+	temp := struct {
+		SceneId string `json:"sceneId"`
+		SceneName string `json:"sceneName"`
+	}{"1","bedroom"}
+	buf,err := json.Marshal(temp)
+	checkErr(err)
+	resp, err := client.Post("http://localhost:8088/v1/scenes/name","application/json",bytes.NewBuffer(buf))
+	checkErr(err)
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+	 */
+
 
 }
 

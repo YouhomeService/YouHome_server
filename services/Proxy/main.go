@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strings"
 	"fmt"
-	"log"
 )
 
 /*
@@ -24,12 +23,12 @@ func NewMultipleHostsReverseProxy() *httputil.ReverseProxy {
 		data := strings.Split(path,"/")
 		service := strings.Split(data[2],"?")[0]
 		switch service{
-			case "users":
-				req.URL.Host = userService
-			case "scenes":
-				req.URL.Host = sceneService
-			case "devices":
-				req.URL.Host = deviceService
+		case "users":
+			req.URL.Host = userService
+		case "scenes":
+			req.URL.Host = sceneService
+		case "devices":
+			req.URL.Host = deviceService
 		}
 
 		fmt.Println(req.URL.Scheme)
@@ -40,6 +39,11 @@ func NewMultipleHostsReverseProxy() *httputil.ReverseProxy {
 }
 
 func main() {
+	//err := http.ListenAndServeTLS(":8088", "cert.pem", "key.pem", nil)
+
 	proxy := NewMultipleHostsReverseProxy()
-	log.Fatal(http.ListenAndServe(":8088", proxy))
+	err :=http.ListenAndServeTLS(":443", "cert.pem","key.pem",proxy)
+	if err != nil{
+		fmt.Println(err)
+	}
 }

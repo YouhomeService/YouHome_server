@@ -69,12 +69,42 @@ func deleteHandler(w http.ResponseWriter, r *http.Request){
 	fmt.Fprint(w,http.StatusOK)
 	return
 }
+func nameHandler(w http.ResponseWriter,r *http.Request){
+	r.ParseForm()
+	if r.Method == "GET"{
+		getName(w,r);
+	}else{
+		updateName(w,r)
+	}
+	return
+}
+func getName(w http.ResponseWriter,r*http.Request){
+	r.ParseForm()
+	m, _ := url.ParseQuery(r.URL.RawQuery)
+	sceneId := m["sceneId"][0]
+	data := entities.GetSceneName(sceneId)
+	fmt.Fprint(w, data)
+	return
+}
+func updateName(w http.ResponseWriter,r*http.Request){
+	r.ParseForm()
+	var user map[string]interface{}
+	data, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(data, &user)
+	fmt.Println(string(data))
+
+	sceneId := user["sceneId"].(string)
+	sceneName := user["sceneName"].(string)
+	result := entities.UpdateSceneName(sceneName,sceneId)
+	fmt.Fprint(w,result)
+}
 func checkErr(err error){
 	if err != nil{
 		panic(err)
 	}
 }
 func LoadRoute() {
+	http.HandleFunc("/v1/scenes/name",nameHandler)
 	http.HandleFunc("/v1/scenes/delete",deleteHandler)
 	http.HandleFunc("/v1/scenes", handler)
 }

@@ -8,6 +8,7 @@ func InitRoutes(){
 	http.HandleFunc("/scene/all",sceneAllHandler)
 	http.HandleFunc("/scene/create",sceneCreateHandler)
 	http.HandleFunc("/scene/delete",deleteSceneHandler)
+	http.HandleFunc("/scene/name",sceneNameHandler)
 
 	http.HandleFunc("/device/all",deviceAllHandler)
 	http.HandleFunc("/device",deviceHandler)

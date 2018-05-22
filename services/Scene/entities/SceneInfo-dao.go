@@ -45,7 +45,25 @@ func GetSceneId(sceneName string, userId string) string{
 	}
 	return sceneId
 }
-
+func GetSceneName(sceneId string)string{
+	sql := "select sceneName from scene where sceneId = ?"
+	rows, err := mydb.Query(sql, sceneId)
+	checkErr(err)
+	var sceneName string
+	if rows == nil{
+		return ""
+	}
+	for rows.Next(){
+		rows.Scan(&sceneName)
+	}
+	return sceneName
+}
+func UpdateSceneName(sceneName string,sceneId string)string{
+	sql := "UPDATE scene SET sceneName = ? WHERE sceneId = ?"
+	_ ,err := mydb.Exec(sql,sceneName,sceneId)
+	checkErr(err)
+	return sceneName
+}
 func DeleteScene(id string) error {
 	sql := "delete FROM scene where sceneId=? "
 	_, err := mydb.Exec(sql, id)
