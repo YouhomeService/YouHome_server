@@ -12,6 +12,7 @@ func LoadRouters() {
 
 	http.HandleFunc("/v1/devices", deviceInfoHandler)
 	http.HandleFunc("/v1/devices/states", statesHandler)
+	http.HandleFunc("/v1/devices/devicename", devicenameHandler)
 }
 
 func deviceInfoHandler(w http.ResponseWriter,req *http.Request) {
@@ -25,6 +26,15 @@ func deviceInfoHandler(w http.ResponseWriter,req *http.Request) {
 func statesHandler(w http.ResponseWriter,req *http.Request) {
 	if req.Method == "GET" {
 		getStatesHandler(w, req)
+	}
+}
+
+func devicenameHandler(w http.ResponseWriter,req *http.Request) {
+	if req.Method == "GET" {
+		getDeviceNameHandler(w, req)
+	}
+	if req.Method == "POST" {
+		postDeviceNameHandler(w, req)
 	}
 }
 
@@ -54,6 +64,39 @@ func getStatesHandler(w http.ResponseWriter,req *http.Request) {
 	check(err)
 	body, _ := ioutil.ReadAll(res.Body)
 	fmt.Fprintln(w, string(body))
+}
+
+func getDeviceNameHandler(w http.ResponseWriter,req *http.Request) {
+	id := req.FormValue("deviceId")
+	deviceName := entities.GetDeviceName(id)
+	data := struct{
+		DeviceName string `json:"deviceName"`
+	}{deviceName}
+	buf, _ := json.Marshal(data)
+	//fmt.Println(string(buf))
+	fmt.Fprintln(w, string(buf))
+}
+
+func postDeviceNameHandler(w http.ResponseWriter,req *http.Request) {
+	req.ParseForm()
+	var device map[string]interface{}
+	body, _ := ioutil.ReadAll(req.Body)
+	json.Unmarshal(body, &device)
+	id := device["deviceId"].(string)
+	name := device["deviceName"].(string)
+	err := entities.SetDeviceName(id, name)
+	check(err)
+
+	if err == nil {
+		name := entities.GetDeviceName(id)
+		data := struct{
+			DeviceName string `json:"deviceName"`
+		}{name}
+		buf, _ := json.Marshal(data)
+		fmt.Fprintln(w, string(buf))
+	} else {
+		w.WriteHeader(http.StatusForbidden)
+	}
 }
 
 func check(err error) {

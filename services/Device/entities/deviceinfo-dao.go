@@ -22,16 +22,22 @@ func Insert(devicename string, entityid string, sceneid string) error {
 	return err
 }
 
-func QueryByDeviceId(id string) string {
-	sql := "SELECT entityid FROM deviceinfo WHERE deviceid = ?"
+func QueryByDeviceId(id string) (string, string) {
+	sql := "SELECT entityid, devicename FROM deviceinfo WHERE deviceid = ?"
 	rows, err := mydb.Query(sql, id)
 	checkErr(err)
-	var entityId string
+	var entityId, deviceName string
 	if rows == nil {
-		return ""
+		return "",""
 	}
 	for rows.Next() {
-		rows.Scan(&entityId)
+		rows.Scan(&entityId, &deviceName)
 	}
-	return entityId
+	return entityId, deviceName
+}
+
+func UpdateNameById(id string, name string) error {
+	sql := "UPDATE deviceinfo set devicename=? where deviceid=? "
+	_, err := mydb.Exec(sql, name, id)
+	return err
 }
