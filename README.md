@@ -9,6 +9,15 @@
 * Service API: https://shimo.im/docs/IyVxjhwytyQDZpDq/
 
 ## Host and port
-  123.207.55.27:8088
+  https://123.207.55.27
+
+  Now you can use our domain name: https://youhome.xyz
+
   For example：
-  https://123.207.55.27:8088/scene/all?userId=1533
+  https://123.207.55.27/scene/all?userId=1533
+
+  or
+
+  https://youhome.xyz/scene/all?userId=1533
+
+ 
