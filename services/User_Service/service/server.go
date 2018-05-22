@@ -13,6 +13,12 @@ func LoadRouters() {
 
 	http.HandleFunc("/v1/users", userInfoHandler)
 	http.HandleFunc("/v1/users/userName", userNameHandler)
+	http.HandleFunc("/v1/test", testHandler)
+}
+
+func testHandler(w http.ResponseWriter,req *http.Request) {
+	test := "testing!"
+	fmt.Fprintln(w, test)
 }
 
 func userInfoHandler(w http.ResponseWriter,req *http.Request) {
