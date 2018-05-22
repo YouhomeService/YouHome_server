@@ -1,4 +1,4 @@
-* Gateway Port: 8088
+* Gateway Port: 544
 
 
 * UserService Port: 9091

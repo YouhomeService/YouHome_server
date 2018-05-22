@@ -67,3 +67,6 @@ func deleteSceneHandler(w http.ResponseWriter, r *http.Request){
 	fmt.Fprintf(w, string(body))
 	return
 }
+func sceneNameHandler(w http.ResponseWriter, r*http.Request)  {
+
+}

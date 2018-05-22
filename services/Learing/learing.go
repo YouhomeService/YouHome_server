@@ -1,28 +1,14 @@
 package main
 
 import (
-	"encoding/json"
+	"strings"
 	"fmt"
 )
 
-func main(){
-	data := struct {
-		Id string
-		Name string
-	}{"1234","tom"}
-	buf,err := json.Marshal(data)
-	check(err)
 
-	fmt.Println(string(buf))
-	var user map[string]interface{}
-	json.Unmarshal(buf,&user)
-	temp := user["ef"]
-	if temp == nil{
-		fmt.Println("nil")
-	}
-}
-func check(err error){
-	if err != nil{
-		panic(err)
-	}
+func main() {
+	path := "/v1/users?userId=1533"
+	data := strings.Split(path,"/")[2]
+	//service := strings.Split(data[2],"?")[0]
+	fmt.Println(data)
 }
