@@ -9,8 +9,10 @@ import (
 func main() {
 
 	service.InitRoutes()
+
 	err := http.ListenAndServeTLS(":8080", "cert.pem", "key.pem", nil)
 	//err := http.ListenAndServe(":8088",nil)
+
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
