@@ -9,7 +9,7 @@ import (
 	"crypto/tls"
 )
 
-var address string = "https://localhost"//"https://123.207.55.27"
+var address string = "https://youhome.xyz"//"https://123.207.55.27"
 var tr = &http.Transport{
 	TLSClientConfig:    &tls.Config{InsecureSkipVerify: true},
 }
@@ -160,7 +160,7 @@ func main() {
 	//getAllScene("1533")
 	//getDeviceOfScene("1")
 
-	updateDeviceName("1","Mytemperature")
+	//updateDeviceName("1","Mytemperature")
 	getDeviceName("1")
 	//getDeviceState("4")
 	//updateDeviceState("4","turn_off")
