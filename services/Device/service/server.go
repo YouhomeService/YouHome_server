@@ -64,7 +64,7 @@ func getDeviceHandler(w http.ResponseWriter,req *http.Request) {
 func getStatesHandler(w http.ResponseWriter,req *http.Request) {
 	id := req.FormValue("deviceId")
 	entityId := entities.GetEntityId(id)
-	haIP := "http://youhome.xyz:8125"
+	haIP := "http://123.207.55.27:8125"
 	res, err := http.Get(haIP+"/api/states/"+entityId)
 	check(err)
 	body, _ := ioutil.ReadAll(res.Body)
