@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"bytes"
+	"strings"
 )
 
 func LoadRouters() {
@@ -26,6 +28,9 @@ func deviceInfoHandler(w http.ResponseWriter,req *http.Request) {
 func statesHandler(w http.ResponseWriter,req *http.Request) {
 	if req.Method == "GET" {
 		getStatesHandler(w, req)
+	}
+	if req.Method == "POST" {
+		postStatesHandler(w, req)
 	}
 }
 
@@ -59,7 +64,7 @@ func getDeviceHandler(w http.ResponseWriter,req *http.Request) {
 func getStatesHandler(w http.ResponseWriter,req *http.Request) {
 	id := req.FormValue("deviceId")
 	entityId := entities.GetEntityId(id)
-	haIP := "haserverip"
+	haIP := "http://youhome.xyz:8125"
 	res, err := http.Get(haIP+"/api/states/"+entityId)
 	check(err)
 	body, _ := ioutil.ReadAll(res.Body)
@@ -97,6 +102,35 @@ func postDeviceNameHandler(w http.ResponseWriter,req *http.Request) {
 	} else {
 		w.WriteHeader(http.StatusForbidden)
 	}
+}
+
+func postStatesHandler(w http.ResponseWriter,req *http.Request) {
+	req.ParseForm()
+	var device map[string]interface{}
+	body, _ := ioutil.ReadAll(req.Body)
+	json.Unmarshal(body, &device)
+	id := device["deviceId"].(string)
+	operation := device["operation"].(string)
+	entityId := entities.GetEntityId(id)
+	data := struct {
+		EntityId string `json:"entity_id"`
+	}{entityId}
+	domain := strings.Split(entityId, ".")
+	buf, _ := json.Marshal(data)
+	fmt.Println("http://youhome.xyz:8125/api/services/"+domain[0]+"/"+operation)
+	_, err := http.Post("http://youhome.xyz:8125/api/services/"+domain[0]+"/"+operation,
+		"application/json", bytes.NewBuffer(buf))
+	var r string
+	if err == nil {
+		r = "1"
+	} else {
+		r = "0"
+	}
+	rdata := struct {
+		Result string `json:"result"`
+	}{r}
+	buf1, _ := json.Marshal(rdata)
+	fmt.Fprintln(w, string(buf1))
 }
 
 func check(err error) {
