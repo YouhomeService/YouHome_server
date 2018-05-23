@@ -110,6 +110,40 @@ func getDeviceState(deviceId string){
 
 	fmt.Println(string(body))
 }
+func updateDeviceState(deviceId, operation string){
+	temp := struct {
+		DeviceId string `json:"deviceId"`
+		Operation string `json:"operation"`
+	}{deviceId,operation}
+	buf,err := json.Marshal(temp)
+	checkErr(err)
+	resp, err := client.Post(address + "/v1/devices/states","application/json",bytes.NewBuffer(buf))
+	checkErr(err)
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+func getDeviceName(deviceId string){
+	//	/v1/devices/devicename?deviceId=abc
+	res,err := client.Get(address + "/v1/devices/devicename?deviceId=" + deviceId)
+	checkErr(err)
+
+	body,err := ioutil.ReadAll(res.Body)
+	checkErr(err)
+
+	fmt.Println(string(body))
+}
+func updateDeviceName(deviceId,deviceName string){
+	temp := struct {
+		DeviceId string `json:"deviceId"`
+		DeviceName string `json:"deviceName"`
+	}{deviceId,deviceName}
+	buf,err := json.Marshal(temp)
+	checkErr(err)
+	resp, err := client.Post(address + "/v1/devices/devicename","application/json",bytes.NewBuffer(buf))
+	checkErr(err)
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
 func TestWechatApi(){
 	//https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code
 	resp, err := http.Get("https://api.weixin.qq.com/sns/jscode2session?appid=wx394f9cc0f949d50b&secret=0346967483b301c189254bef576b1091&js_code=JSCODE&grant_type=authorization_code")
@@ -125,30 +159,16 @@ func main() {
 	//getUserInfo("1533")
 	//getAllScene("1533")
 	//getDeviceOfScene("1")
-	getDeviceState("4")
 
+	updateDeviceName("1","Mytemperature")
+	getDeviceName("1")
+	//getDeviceState("4")
+	//updateDeviceState("4","turn_off")
 	/*
 	res,err:= client.Get( "https://localhost/v1/users?userId=1533")
 	checkErr(err)
 	body, _ := ioutil.ReadAll(res.Body)
 	fmt.Println(string(body))
 	 */
-
-
-
-
-	/*
-	temp := struct {
-		SceneId string `json:"sceneId"`
-		SceneName string `json:"sceneName"`
-	}{"1","bedroom"}
-	buf,err := json.Marshal(temp)
-	checkErr(err)
-	resp, err := client.Post("http://localhost:8088/v1/scenes/name","application/json",bytes.NewBuffer(buf))
-	checkErr(err)
-	body, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println(string(body))
-	 */
-
 
 }
