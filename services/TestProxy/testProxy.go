@@ -67,7 +67,7 @@ func getAllScene(userId string){
 }
 func getUserInfo(userId string){
 	url := address+"/v1/users?userId="+userId
-	fmt.Println(url)
+	//fmt.Println(url)
 	resp, err := client.Get(url)
 	checkErr(err)
 	body, err := ioutil.ReadAll(resp.Body)
@@ -155,20 +155,6 @@ func TestWechatApi(){
 	fmt.Println(string(body))
 }
 func main() {
-
-	//getUserInfo("1533")
-	//getAllScene("1533")
-	//getDeviceOfScene("1")
-
-	//updateDeviceName("1","Mytemperature")
-	getDeviceName("1")
-	//getDeviceState("4")
-	//updateDeviceState("4","turn_off")
-	/*
-	res,err:= client.Get( "https://localhost/v1/users?userId=1533")
-	checkErr(err)
-	body, _ := ioutil.ReadAll(res.Body)
-	fmt.Println(string(body))
-	 */
-
+	updateDeviceState("4","turn_off")
+	getDeviceState("4")
 }

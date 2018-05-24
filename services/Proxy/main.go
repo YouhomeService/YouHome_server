@@ -40,10 +40,8 @@ func NewMultipleHostsReverseProxy() *httputil.ReverseProxy {
 }
 
 func main() {
-	//err := http.ListenAndServeTLS(":8088", "cert.pem", "key.pem", nil)
-
 	proxy := NewMultipleHostsReverseProxy()
-	err :=http.ListenAndServeTLS(":443", "cert.pem","key.pem",proxy)
+	err :=http.ListenAndServeTLS(":443", "license/cert.pem","license/key.pem",proxy)
 	if err != nil{
 		fmt.Println(err)
 	}
