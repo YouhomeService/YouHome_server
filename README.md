@@ -15,10 +15,10 @@ Now you can use our domain name: “youhome.xyz”
 
 For example：
 
-https://123.207.55.27/scene/all?userId=1533
+https://123.207.55.27/v1/users?userId=1533
 
 or
 
-https://youhome.xyz/scene/all?userId=1533
+https://youhome.xyz/v1/users?userId=abc
 
  
