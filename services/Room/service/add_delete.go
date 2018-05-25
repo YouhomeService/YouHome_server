@@ -5,11 +5,11 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"fmt"
-	"YouHome_server/services/Scene/entities"
+	"YouHome_server/services/Room/entities"
 	"net/url"
 )
 
-func addScenes(w http.ResponseWriter,r *http.Request){
+func addRooms(w http.ResponseWriter,r *http.Request){
 	r.ParseForm()
 	var user map[string]interface{}
 	data, _ := ioutil.ReadAll(r.Body)
@@ -17,22 +17,22 @@ func addScenes(w http.ResponseWriter,r *http.Request){
 	fmt.Println(string(data))
 
 	userId := user["userId"].(string)
-	sceneName := user["sceneName"].(string)
-	fmt.Println(sceneName,userId)
+	roomName := user["roomName"].(string)
+	fmt.Println(roomName,userId)
 
-	err := entities.AddScene(sceneName, userId)
+	err := entities.AddRoom(roomName, userId)
 	checkErr(err)
-	sceneId := entities.GetSceneId(sceneName,userId)
-	fmt.Fprint(w, sceneId)
+	roomId := entities.GetRoomId(roomName,userId)
+	fmt.Fprint(w, roomId)
 	return
 }
 
 
-func deleteScenes(w http.ResponseWriter,r *http.Request){
+func deleteRoom(w http.ResponseWriter,r *http.Request){
 	r.ParseForm()
 	m, _ := url.ParseQuery(r.URL.RawQuery)
-	sceneId := m["sceneId"][0]
-	err := entities.DeleteScene(sceneId)
+	roomId := m["roomId"][0]
+	err := entities.DeleteRoom(roomId)
 	checkErr(err)
 	fmt.Fprint(w,http.StatusOK)
 }
@@ -45,10 +45,10 @@ func deleteHandler(w http.ResponseWriter, r *http.Request){
 	json.Unmarshal(data, &user)
 	fmt.Println(string(data))
 
-	sceneId := user["sceneId"].(string)
-	fmt.Println(sceneId)
+	roomId := user["roomId"].(string)
+	fmt.Println(roomId)
 
-	err := entities.DeleteScene(sceneId)
+	err := entities.DeleteRoom(roomId)
 	checkErr(err)
 	fmt.Fprint(w,http.StatusOK)
 	return

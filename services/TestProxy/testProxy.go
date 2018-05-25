@@ -8,20 +8,20 @@ import (
 	"encoding/json"
 	"crypto/tls"
 )
-
-var address string = "https://youhome.xyz"//"https://123.207.55.27"
+var address string = "http://localhost:9093"
+//var address string = "https://youhome.xyz"//"https://123.207.55.27"
 var tr = &http.Transport{
 	TLSClientConfig:    &tls.Config{InsecureSkipVerify: true},
 }
 var client = &http.Client{Transport: tr}
-func deleteScene(id string){
+func deleteRoom(id string){
 	data := struct {
-		SceneId string `json:"sceneId"`
+		RoomId string `json:"roomId"`
 	}{id}
 	buf , _ := json.Marshal(data)///scene/delete
 	//fmt.Println(string(buf))
 	//resp, err = http.Post(address + "/scene/delete","application/json",bytes.NewBuffer(tempJson))
-	resp, err := client.Post(address+"/v1/scenes/delete","application/json",bytes.NewBuffer(buf))
+	resp, err := client.Post(address+"/v1/rooms/delete","application/json",bytes.NewBuffer(buf))
 	if err != nil{
 		fmt.Println(err)
 		return
@@ -45,21 +45,21 @@ func login(code string){
 	checkErr(err)
 	fmt.Println(string(body))
 }
-func createScene(userId,sceneName string){
+func createRoom(userId,roomName string){
 	scene := struct {
 		UserId string `json:"userId"`
-		SceneName string `json:"sceneName"`
-	}{userId,sceneName}
+		RoomName string `json:"roomName"`
+	}{userId,roomName}
 	sceneJson,err := json.Marshal(scene)
 	checkErr(err)
-	resp, err := client.Post(address+"/v1/scenes","application/json",bytes.NewBuffer(sceneJson))
+	resp, err := client.Post(address+"/v1/rooms","application/json",bytes.NewBuffer(sceneJson))
 	checkErr(err)
 	body, err := ioutil.ReadAll(resp.Body)
 	checkErr(err)
 	fmt.Println(string(body))
 }
-func getAllScene(userId string){
-	resp, err := client.Get(address + "/v1/scenes?userId="+userId)
+func getAllRooms(userId string){
+	resp, err := client.Get(address + "/v1/rooms?userId="+userId)
 	checkErr(err)
 	body, err := ioutil.ReadAll(resp.Body)
 	checkErr(err)
@@ -74,9 +74,9 @@ func getUserInfo(userId string){
 	checkErr(err)
 	fmt.Println(string(body))
 }
-func getDeviceOfScene(sceneId string){
-	//device/all?sceneId=room
-	res,err := client.Get(address + "/v1/devices?sceneId=" + sceneId)
+func getDeviceOfRoom(roomId string){
+	//device/all?roomId=room
+	res,err := client.Get(address + "/v1/devices?roomId=" + roomId)
 	checkErr(err)
 
 	body,err := ioutil.ReadAll(res.Body)
@@ -155,6 +155,7 @@ func TestWechatApi(){
 	fmt.Println(string(body))
 }
 func main() {
-	updateDeviceState("4","turn_off")
-	getDeviceState("4")
+
+	createRoom("1533","bedroom")
+	getAllRooms("1533")
 }

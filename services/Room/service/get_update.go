@@ -6,14 +6,14 @@ import (
 	"fmt"
 	"encoding/json"
 	"io/ioutil"
-	"YouHome_server/services/Scene/entities"
+	"YouHome_server/services/Room/entities"
 )
 
-func getScenes(w http.ResponseWriter,r *http.Request){
+func getRooms(w http.ResponseWriter,r *http.Request){
 	r.ParseForm()
 	m, _ := url.ParseQuery(r.URL.RawQuery)
 	userId := m["userId"][0]
-	data := entities.GetScenes(userId)
+	data := entities.GetRooms(userId)
 	fmt.Fprint(w, data)
 	return
 }
@@ -30,7 +30,7 @@ func getName(w http.ResponseWriter,r*http.Request){
 	r.ParseForm()
 	m, _ := url.ParseQuery(r.URL.RawQuery)
 	sceneId := m["sceneId"][0]
-	data := entities.GetSceneName(sceneId)
+	data := entities.GetRoomName(sceneId)
 	fmt.Fprint(w, data)
 	return
 }
@@ -43,7 +43,7 @@ func updateName(w http.ResponseWriter,r*http.Request){
 
 	sceneId := user["sceneId"].(string)
 	sceneName := user["sceneName"].(string)
-	result := entities.UpdateSceneName(sceneName,sceneId)
+	result := entities.UpdateRoomName(sceneName,sceneId)
 	fmt.Fprint(w,result)
 }
 

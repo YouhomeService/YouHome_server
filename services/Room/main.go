@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"log"
 	"fmt"
-	"YouHome_server/services/Scene/service"
+	"YouHome_server/services/Room/service"
 )
 
 func main() {
