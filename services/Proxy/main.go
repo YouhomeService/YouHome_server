@@ -4,11 +4,12 @@ import (
 	"net/http/httputil"
 	"net/http"
 	"strings"
+	"fmt"
 )
 
 var userService = "172.22.16.5:9091"
 var deviceService ="172.22.16.4:9092"
-var sceneService = "172.22.16.3:9093"
+var roomService = "172.22.16.3:9093"
  /*
 var userService = "localhost:9091"
 var deviceService ="localhost:9092"

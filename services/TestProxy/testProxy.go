@@ -8,8 +8,8 @@ import (
 	"encoding/json"
 	"crypto/tls"
 )
-var address string = "http://localhost:9092"
-//var address string = "https://123.207.55.27"
+//var address string = "http://localhost:9092"
+var address string = "https://youhome.xyz"//"https://123.207.55.27"
 var tr = &http.Transport{
 	TLSClientConfig:    &tls.Config{InsecureSkipVerify: true},
 }
@@ -159,4 +159,6 @@ func main() {
 	//getDeviceState("4")
 	//getDeviceOfRoom("1")
 	//updateUserInfo("1533","lf")
+	getDeviceState("4")
+	//updateDeviceState("4","turn_off")
 }
