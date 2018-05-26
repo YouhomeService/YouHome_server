@@ -1,7 +1,7 @@
 package entities
 
 func Query(id string) [][3]string{
-	sql := "SELECT deviceid, devicename, entityid FROM deviceinfo WHERE sceneid = ?"
+	sql := "SELECT deviceid, devicename, entityid FROM deviceinfo WHERE roomid = ?"
 	rows, err := mydb.Query(sql, id)
 	checkErr(err)
 	var dList [][3]string
@@ -16,9 +16,9 @@ func Query(id string) [][3]string{
 	return dList
 }
 
-func Insert(devicename string, entityid string, sceneid string) error {
-	sql := "INSERT INTO deviceinfo (devicename, entityid, sceneid) VALUES (?, ?, ?)"
-	_, err := mydb.Exec(sql, devicename, entityid, sceneid)
+func Insert(devicename string, entityid string, roomid string) error {
+	sql := "INSERT INTO deviceinfo (devicename, entityid, roomid) VALUES (?, ?, ?)"
+	_, err := mydb.Exec(sql, devicename, entityid, roomid)
 	return err
 }
 

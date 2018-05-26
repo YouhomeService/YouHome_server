@@ -44,8 +44,8 @@ func devicenameHandler(w http.ResponseWriter,req *http.Request) {
 }
 
 func getDeviceHandler(w http.ResponseWriter,req *http.Request) {
-	id := req.FormValue("sceneId")
-	devices := entities.GetDevicesBySceneId(id)
+	id := req.FormValue("roomId")
+	devices := entities.GetDevicesByRoomId(id)
 	l := len(devices)
 	type device struct {
 		DeviceId string `json:"deviceId"`

@@ -4,17 +4,16 @@ import (
 	"net/http/httputil"
 	"net/http"
 	"strings"
-	"fmt"
 )
 
-/*
-var userService = "http://172.22.16.5:9091"
-var deviceService ="http://172.22.16.4:9092"
-var sceneService = "http://172.22.16.3:9093"
- */
+var userService = "172.22.16.5:9091"
+var deviceService ="172.22.16.4:9092"
+var sceneService = "172.22.16.3:9093"
+ /*
 var userService = "localhost:9091"
 var deviceService ="localhost:9092"
-var sceneService = "localhost:9093"
+var roomService = "localhost:9093"
+ */
 func NewMultipleHostsReverseProxy() *httputil.ReverseProxy {
 	director := func(req *http.Request) {
 		req.URL.Scheme = "http"
@@ -25,8 +24,8 @@ func NewMultipleHostsReverseProxy() *httputil.ReverseProxy {
 		switch service{
 		case "users":
 			req.URL.Host = userService
-		case "scenes":
-			req.URL.Host = sceneService
+		case "rooms":
+			req.URL.Host = roomService
 		case "devices":
 			req.URL.Host = deviceService
 		}
