@@ -36,6 +36,30 @@ func QueryByDeviceId(id string) (string, string) {
 	return entityId, deviceName
 }
 
+func GetDeviceUrl(deviceid string)string{
+	sql := "select url from deviceinfo where deviceid = ?"
+	rows, err := mydb.Query(sql, deviceid)
+	checkErr(err)
+	if rows == nil{
+		return "none"
+	}
+	var url string
+	for rows.Next(){
+		rows.Scan(&url)
+	}
+	return url
+}
+
+func UpdateDeviceUrl(deviceid,deviceurl string)bool{
+	sql := "update deviceinfo set url = ? where deviceid = ?"
+	_, err := mydb.Exec(sql,deviceurl,deviceid)
+	if err != nil{
+		return false
+	}
+	checkErr(err)
+	return true
+}
+
 func UpdateNameById(id string, name string) error {
 	sql := "UPDATE deviceinfo set devicename=? where deviceid=? "
 	_, err := mydb.Exec(sql, name, id)

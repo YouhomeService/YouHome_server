@@ -58,11 +58,32 @@ func GetRoomName(roomId string)string{
 	}
 	return roomName
 }
+func GetRoomUrl(roomId string)string{
+	sql := "select url from room where roomId = ?"
+	rows, err := mydb.Query(sql,roomId)
+	checkErr(err)
+	var roomUrl string
+	if rows == nil{
+		return ""
+	}
+	for rows.Next(){
+		rows.Scan(&roomUrl)
+	}
+	return roomUrl;
+}
 func UpdateRoomName(roomName string,roomId string)string{
 	sql := "UPDATE room SET roomName = ? WHERE roomId = ?"
 	_ ,err := mydb.Exec(sql,roomName,roomId)
 	checkErr(err)
 	return roomName
+}
+func UpdateRoomUrl(roomUrl,roomId string)bool{
+	sql := "update room set url = ? where roomId = ?"
+	_, err := mydb.Exec(sql,roomUrl,roomId)
+	if err != nil{
+		return false
+	}
+	return true
 }
 func DeleteRoom(id string) error {
 	sql := "delete FROM room where roomId=? "

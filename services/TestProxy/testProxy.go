@@ -8,8 +8,8 @@ import (
 	"encoding/json"
 	"crypto/tls"
 )
-//var address string = "http://localhost:9092"
-var address string = "https://youhome.xyz"//"https://123.207.55.27"
+var address string = "http://localhost:9092"
+//var address string = "https://youhome.xyz"//"https://123.207.55.27"
 var tr = &http.Transport{
 	TLSClientConfig:    &tls.Config{InsecureSkipVerify: true},
 }
@@ -53,6 +53,26 @@ func createRoom(userId,roomName string){
 	sceneJson,err := json.Marshal(scene)
 	checkErr(err)
 	resp, err := client.Post(address+"/v1/rooms","application/json",bytes.NewBuffer(sceneJson))
+	checkErr(err)
+	body, err := ioutil.ReadAll(resp.Body)
+	checkErr(err)
+	fmt.Println(string(body))
+}
+func getRoomUrl(roomId string){
+	resp, err := client.Get(address + "/v1/rooms/url?roomId="+roomId)
+	checkErr(err)
+	body, err := ioutil.ReadAll(resp.Body)
+	checkErr(err)
+	fmt.Println(string(body))
+}
+func updateRoomUrl(roomId,roomUrl string){
+	temp := struct {
+		RoomId string `json:"roomId"`
+		RoomUrl string `json:"roomUrl"`
+	}{roomId,roomUrl}
+	sceneJson,err := json.Marshal(temp)
+	checkErr(err)
+	resp, err := client.Post(address+"/v1/rooms/url","application/json",bytes.NewBuffer(sceneJson))
 	checkErr(err)
 	body, err := ioutil.ReadAll(resp.Body)
 	checkErr(err)
@@ -132,6 +152,28 @@ func getDeviceName(deviceId string){
 
 	fmt.Println(string(body))
 }
+func getDeviceUrl(deviceId string){
+	res,err := client.Get(address + "/v1/devices/url?deviceId=" + deviceId)
+	checkErr(err)
+
+	body,err := ioutil.ReadAll(res.Body)
+	checkErr(err)
+
+	fmt.Println(string(body))
+	return
+}
+func updateDeviceUrl(deviceId,deviceUrl string){
+	temp := struct {
+		DeviceId string `json:"deviceId"`
+		DeviceUrl string `json:"url"`
+	}{deviceId,deviceUrl}
+	buf,err := json.Marshal(temp)
+	checkErr(err)
+	resp, err := client.Post(address + "/v1/devices/url","application/json",bytes.NewBuffer(buf))
+	checkErr(err)
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
 func updateDeviceName(deviceId,deviceName string){
 	temp := struct {
 		DeviceId string `json:"deviceId"`
@@ -140,6 +182,18 @@ func updateDeviceName(deviceId,deviceName string){
 	buf,err := json.Marshal(temp)
 	checkErr(err)
 	resp, err := client.Post(address + "/v1/devices/devicename","application/json",bytes.NewBuffer(buf))
+	checkErr(err)
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+func addRoom(userId,roomName string){
+	temp := struct {
+		UserId string `json:"userId"`
+		RoomId string `json:"roomName"`
+	}{userId,roomName}
+	buf,err := json.Marshal(temp)
+	checkErr(err)
+	resp, err := client.Post(address + "/v1/rooms","application/json",bytes.NewBuffer(buf))
 	checkErr(err)
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
@@ -154,11 +208,34 @@ func TestWechatApi(){
 	checkErr(err)
 	fmt.Println(string(body))
 }
+func testOwl(){
+	temp := struct {
+		Phone_number string `json:"phone_number"`
+		Password string `json:"password"`
+		Nickname string `json:"nickname"`
+		Sex string `json:"sex"`
+		Birth string `json:"birth"`
+	}{"12346579","suanleba","算了吧","男","1992"}
+	buf,err := json.Marshal(temp)
+	checkErr(err)
+	resp, err := http.Post("http://localhost:8000/api/login","application/json",bytes.NewBuffer(buf))
+	checkErr(err)
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
 func main() {
 	//getUserInfo("1533")
 	//getDeviceState("4")
-	//getDeviceOfRoom("1")
+	//getDeviceOfRoom("2")
 	//updateUserInfo("1533","lf")
-	getDeviceState("4")
+	//testOwl()
+	//updateRoomUrl("2","../../images/equipment/gateway.jpg")
+	//getRoomUrl("2")
+	updateDeviceUrl("1","https://s7.postimg.cc/xdytxcbm3/image.jpg")
+	getDeviceUrl("1")
+	//deleteRoom("2")
+	//addRoom("1533","Room1234")
+	//getAllRooms("1533")
+	//getDeviceState("2")
 	//updateDeviceState("4","turn_off")
 }

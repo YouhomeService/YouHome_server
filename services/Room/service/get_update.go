@@ -29,8 +29,8 @@ func nameHandler(w http.ResponseWriter,r *http.Request){
 func getName(w http.ResponseWriter,r*http.Request){
 	r.ParseForm()
 	m, _ := url.ParseQuery(r.URL.RawQuery)
-	sceneId := m["sceneId"][0]
-	data := entities.GetRoomName(sceneId)
+	roomId := m["roomId"][0]
+	data := entities.GetRoomName(roomId)
 	fmt.Fprint(w, data)
 	return
 }
@@ -41,9 +41,31 @@ func updateName(w http.ResponseWriter,r*http.Request){
 	json.Unmarshal(data, &user)
 	fmt.Println(string(data))
 
-	sceneId := user["sceneId"].(string)
-	sceneName := user["sceneName"].(string)
-	result := entities.UpdateRoomName(sceneName,sceneId)
+	roomId := user["roomId"].(string)
+	roomName := user["roomName"].(string)
+	result := entities.UpdateRoomName(roomName,roomId)
+	fmt.Fprint(w,result)
+}
+
+func getRoomUrl(w http.ResponseWriter, r *http.Request)  {
+	r.ParseForm()
+	m, _ := url.ParseQuery(r.URL.RawQuery)
+	roomId := m["roomId"][0]
+	data := entities.GetRoomUrl(roomId)
+	fmt.Fprint(w, data)
+	return
+}
+
+func updateRoomUrl(w http.ResponseWriter, r *http.Request){
+	r.ParseForm()
+	var user map[string]interface{}
+	data, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(data, &user)
+	fmt.Println(string(data))
+
+	roomId := user["roomId"].(string)
+	roomUrl := user["url"].(string)
+	result := entities.UpdateRoomUrl(roomUrl,roomId)
 	fmt.Fprint(w,result)
 }
 

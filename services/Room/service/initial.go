@@ -5,6 +5,7 @@ import "net/http"
 func LoadRoute() {
 	http.HandleFunc("/v1/rooms/name",nameHandler)
 	http.HandleFunc("/v1/rooms/delete",deleteHandler)
+	http.HandleFunc("/v1/rooms/url",urlHandler)
 	http.HandleFunc("/v1/rooms", handler)
 }
 
@@ -24,4 +25,12 @@ func handler(w http.ResponseWriter, r *http.Request){
 		deleteRoom(w,r)
 	}
 	return
+}
+func urlHandler(w http.ResponseWriter, r *http.Request){
+	r.ParseForm()
+	if r.Method == "POST"{
+		updateRoomUrl(w,r)
+	}else{
+		getRoomUrl(w,r)
+	}
 }

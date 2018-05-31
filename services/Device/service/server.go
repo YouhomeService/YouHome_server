@@ -8,13 +8,16 @@ import (
 	"io/ioutil"
 	"bytes"
 	"strings"
+	"net/url"
 )
 
 func LoadRouters() {
 
-	http.HandleFunc("/v1/devices", deviceInfoHandler)
+
 	http.HandleFunc("/v1/devices/states", statesHandler)
 	http.HandleFunc("/v1/devices/devicename", devicenameHandler)
+	http.HandleFunc("/v1/devices/url",urlHandler)
+	http.HandleFunc("/v1/devices", deviceInfoHandler)
 }
 
 func deviceInfoHandler(w http.ResponseWriter,req *http.Request) {
@@ -22,6 +25,14 @@ func deviceInfoHandler(w http.ResponseWriter,req *http.Request) {
 	fmt.Println("deviceInfoHandler")
 	if req.Method == "GET" {
 		getDeviceHandler(w, req)
+	}
+}
+
+func urlHandler(w http.ResponseWriter,req *http.Request){
+	if req.Method == "POST"{
+		updateUrl(w,req)
+	}else{
+		getUrl(w,req)
 	}
 }
 
@@ -131,6 +142,28 @@ func postStatesHandler(w http.ResponseWriter,req *http.Request) {
 	}{r}
 	buf1, _ := json.Marshal(rdata)
 	fmt.Fprintln(w, string(buf1))
+}
+
+func updateUrl(w http.ResponseWriter,r *http.Request){
+	r.ParseForm()
+	var user map[string]interface{}
+	data, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(data, &user)
+	fmt.Println(string(data))
+
+	deviceId := user["deviceId"].(string)
+	deviceUrl := user["url"].(string)
+	result := entities.UpdateDeviceUrl(deviceId,deviceUrl)
+	fmt.Fprint(w,result)
+}
+
+func getUrl(w http.ResponseWriter,r *http.Request){
+	r.ParseForm()
+	m, _ := url.ParseQuery(r.URL.RawQuery)
+	deviceId := m["deviceId"][0]
+	data := entities.GetDeviceUrl(deviceId)
+	fmt.Fprint(w, data)
+	return
 }
 
 func check(err error) {
