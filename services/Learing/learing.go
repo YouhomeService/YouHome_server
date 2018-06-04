@@ -1,14 +1,29 @@
 package main
-
 import (
+	"net/http"
+	"io/ioutil"
+	"github.com/tidwall/gjson"
 	"strings"
-	"fmt"
+	"encoding/json"
 )
 
-
 func main() {
-	path := "/v1/users?userId=1533"
-	data := strings.Split(path,"/")[2]
-	//service := strings.Split(data[2],"?")[0]
-	fmt.Println(data)
+	resp, _ := http.Get("http://localhost:8123/api/states")
+	body, _ := ioutil.ReadAll(resp.Body)
+	//fmt.Println(string(body))
+	jsonStream := string(body)
+
+	var re []string
+	result := gjson.Get(jsonStream, "#.entity_id")
+	for _, name := range result.Array() {
+		//println(name.String())
+		id := name.String()
+		temp :=strings.Split(id,".")
+		if temp[0] == "switch" || temp[0] == "light" || temp[0]=="sensor"{
+			//println(name.String())
+			re = append(re, name.String())
+		}
+	}
+	data, _ :=json.Marshal(re)
+	println(string(data))
 }

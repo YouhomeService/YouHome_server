@@ -9,16 +9,19 @@ import (
 	"bytes"
 	"strings"
 	"net/url"
+	"github.com/tidwall/gjson"
 )
 
 func LoadRouters() {
 
-
+	http.HandleFunc("/v1/devices/available",availableHandler)
 	http.HandleFunc("/v1/devices/states", statesHandler)
 	http.HandleFunc("/v1/devices/devicename", devicenameHandler)
 	http.HandleFunc("/v1/devices/url",urlHandler)
 	http.HandleFunc("/v1/devices", deviceInfoHandler)
 }
+
+var HAaddr = "http://118.89.50.110:8125"
 
 func deviceInfoHandler(w http.ResponseWriter,req *http.Request) {
 
@@ -128,8 +131,8 @@ func postStatesHandler(w http.ResponseWriter,req *http.Request) {
 	}{entityId}
 	domain := strings.Split(entityId, ".")
 	buf, _ := json.Marshal(data)
-	fmt.Println("http://youhome.xyz:8125/api/services/"+domain[0]+"/"+operation)
-	_, err := http.Post("http://youhome.xyz:8125/api/services/"+domain[0]+"/"+operation,
+	fmt.Println(HAaddr+"/api/services/"+domain[0]+"/"+operation)
+	_, err := http.Post(HAaddr+"/api/services/"+domain[0]+"/"+operation,
 		"application/json", bytes.NewBuffer(buf))
 	var r string
 	if err == nil {
@@ -164,6 +167,28 @@ func getUrl(w http.ResponseWriter,r *http.Request){
 	data := entities.GetDeviceUrl(deviceId)
 	fmt.Fprint(w, data)
 	return
+}
+
+func availableHandler(w http.ResponseWriter,r *http.Request){
+	r.ParseForm()
+	resp, _ := http.Get(HAaddr+"/api/states")
+	body, _ := ioutil.ReadAll(resp.Body)
+	//fmt.Println(string(body))
+	jsonStream := string(body)
+
+	var re []string
+	result := gjson.Get(jsonStream, "#.entity_id")
+	for _, name := range result.Array() {
+		//println(name.String())
+		id := name.String()
+		temp :=strings.Split(id,".")
+		if temp[0] == "switch" || temp[0] == "light" || temp[0]=="sensor"{
+			//println(name.String())
+			re = append(re, name.String())
+		}
+	}
+	data, _ :=json.Marshal(re)
+	fmt.Fprint(w, string(data))
 }
 
 func check(err error) {
