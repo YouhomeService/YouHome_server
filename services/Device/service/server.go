@@ -29,6 +29,9 @@ func deviceInfoHandler(w http.ResponseWriter,req *http.Request) {
 	if req.Method == "GET" {
 		getDeviceHandler(w, req)
 	}
+	if req.Method == "POST" {
+		postDeviceHandler(w, req)
+	}
 }
 
 func urlHandler(w http.ResponseWriter,req *http.Request){
@@ -73,6 +76,28 @@ func getDeviceHandler(w http.ResponseWriter,req *http.Request) {
 	}
 	data, _ := json.Marshal(result)
 	fmt.Fprintln(w, string(data))
+}
+
+func postDeviceHandler(w http.ResponseWriter,req *http.Request) {
+	req.ParseForm()
+	var device map[string]interface{}
+	body, _ := ioutil.ReadAll(req.Body)
+	json.Unmarshal(body, &device)
+	eid := device["entityId"].(string)
+	name := device["deviceName"].(string)
+	rid := device["roomId"].(string)
+
+	err, deviceid := entities.AddDevice(name, eid, rid)
+	check(err)
+	if err == nil {
+		data := struct{
+			DeviceId string `json:"deviceId"`
+		}{deviceid}
+		buf, _ := json.Marshal(data)
+		fmt.Fprintln(w, string(buf))
+	} else {
+		w.WriteHeader(http.StatusForbidden)
+	}
 }
 
 func getStatesHandler(w http.ResponseWriter,req *http.Request) {

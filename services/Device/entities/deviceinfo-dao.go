@@ -1,5 +1,7 @@
 package entities
 
+import "fmt"
+
 func Query(id string) [][3]string{
 	sql := "SELECT deviceid, devicename, entityid FROM deviceinfo WHERE roomid = ?"
 	rows, err := mydb.Query(sql, id)
@@ -20,6 +22,23 @@ func Insert(devicename string, entityid string, roomid string) error {
 	sql := "INSERT INTO deviceinfo (devicename, entityid, roomid) VALUES (?, ?, ?)"
 	_, err := mydb.Exec(sql, devicename, entityid, roomid)
 	return err
+}
+
+func QueryDeviceId(devicename string, entityid string, roomid string) string {
+	fmt.Println("comein")
+	sql := "SELECT deviceid FROM deviceinfo WHERE devicename = ? AND entityid = ? AND roomid = ?"
+	rows, err := mydb.Query(sql, devicename, entityid, roomid)
+	checkErr(err)
+	var deviceid string
+	if rows == nil {
+		return ""
+	}
+	for rows.Next() {
+		rows.Scan(&deviceid)
+	}
+	fmt.Println(deviceid)
+	return deviceid
+
 }
 
 func QueryByDeviceId(id string) (string, string) {
