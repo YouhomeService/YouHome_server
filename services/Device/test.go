@@ -27,7 +27,7 @@ func main() {
 		RoomId string `json:"roomId"`
 	}{"testentityid","testname", "1"}
 	buf, _ := json.Marshal(data)
-	res1, err1 := http.Post("http://127.0.0.1:9092/v1/devices",
+	res1, err1 := http.Post("https://youhome.xyz/v1/devices",
 		"application/json", bytes.NewBuffer(buf))
 	fmt.Println("lalal")
 
@@ -41,7 +41,7 @@ func main() {
 	body, _ := ioutil.ReadAll(res1.Body)
 	fmt.Println(string(body))
 	 // /v1/devices?sceneId=abc
-	res1, _ = http.Get("http://127.0.0.1:9092/v1/devices?roomId=1")
+	res1, _ = http.Get("https://youhome.xyz/v1/devices?roomId=1")
 
 	body1, _ := ioutil.ReadAll(res1.Body)
 	fmt.Println(string(body1))

@@ -207,7 +207,7 @@ func availableHandler(w http.ResponseWriter,r *http.Request){
 		//println(name.String())
 		id := name.String()
 		temp :=strings.Split(id,".")
-		if temp[0] == "switch" || temp[0] == "light" || temp[0]=="sensor"{
+		if temp[0] == "switch" || temp[0] == "light" || temp[0]=="sensor" || temp[0]=="binary_sensor"{
 			//println(name.String())
 			re = append(re, name.String())
 		}

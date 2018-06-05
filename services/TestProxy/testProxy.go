@@ -223,6 +223,42 @@ func testOwl(){
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
 }
+
+func addDevice(deviceName,roomId,entityid string){
+	data := struct {
+		EntityId string `json:"entityId"`
+		DeviceName string `json:"deviceName"`
+		RoomId string `json:"roomId"`
+	}{entityid,deviceName, roomId}
+	buf, _ := json.Marshal(data)
+	res1, err1 := client.Post("https://youhome.xyz/v1/devices",
+		"application/json", bytes.NewBuffer(buf))
+
+	if err1 == nil {
+		fmt.Println("Success")
+		defer res1.Body.Close()
+	} else {
+		//tools.Report(err1)
+		fmt.Println(err1)
+	}
+	body, _ := ioutil.ReadAll(res1.Body)
+	fmt.Println(string(body))
+	// /v1/devices?sceneId=abc
+	res1, _ = client.Get("https://youhome.xyz/v1/devices?roomId="+roomId)
+
+	body1, _ := ioutil.ReadAll(res1.Body)
+	fmt.Println(string(body1))
+}
+func getAvailableDevices(){
+	res,err := client.Get(address + "/v1/devices/available")
+	checkErr(err)
+
+	body,err := ioutil.ReadAll(res.Body)
+	checkErr(err)
+
+	fmt.Println(string(body))
+	return
+}
 func main() {
 	//getUserInfo("1533")
 	//getDeviceState("4")
@@ -236,6 +272,9 @@ func main() {
 	//deleteRoom("2")
 	//addRoom("1533","Room1234")
 	//getAllRooms("1533")
-	//getDeviceState("2")
+	//getDeviceState("3")
 	//updateDeviceState("4","turn_off")
+	//addDevice("abc","21","efg")
+	//getDeviceOfRoom("1")
+	//getAvailableDevices()
 }
