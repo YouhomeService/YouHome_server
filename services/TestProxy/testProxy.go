@@ -8,8 +8,8 @@ import (
 	"encoding/json"
 	"crypto/tls"
 )
-var address string = "http://localhost:9092"
-//var address string = "https://youhome.xyz"//"https://123.207.55.27"
+//var address string = "http://localhost:9092"
+var address string = "https://123.207.55.27"
 var tr = &http.Transport{
 	TLSClientConfig:    &tls.Config{InsecureSkipVerify: true},
 }
@@ -231,8 +231,8 @@ func main() {
 	//testOwl()
 	//updateRoomUrl("2","../../images/equipment/gateway.jpg")
 	//getRoomUrl("2")
-	updateDeviceUrl("1","https://s7.postimg.cc/xdytxcbm3/image.jpg")
-	getDeviceUrl("1")
+	//updateDeviceUrl("1","https://s7.postimg.cc/xdytxcbm3/image.jpg")
+	//getDeviceUrl("1")
 	//deleteRoom("2")
 	//addRoom("1533","Room1234")
 	//getAllRooms("1533")

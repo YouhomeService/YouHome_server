@@ -21,7 +21,7 @@ func LoadRouters() {
 	http.HandleFunc("/v1/devices", deviceInfoHandler)
 }
 
-var HAaddr = "http://118.89.50.110:8125"
+var HAaddr = "http://123.207.55.27:8125"
 
 func deviceInfoHandler(w http.ResponseWriter,req *http.Request) {
 
