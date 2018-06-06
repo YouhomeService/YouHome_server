@@ -2,25 +2,25 @@ package entities
 
 import "fmt"
 
-func Query(id string) [][3]string{
-	sql := "SELECT deviceid, devicename, entityid FROM deviceinfo WHERE roomid = ?"
+func Query(id string) [][4]string{
+	sql := "SELECT deviceid, devicename, entityid, url FROM deviceinfo WHERE roomid = ?"
 	rows, err := mydb.Query(sql, id)
 	checkErr(err)
-	var dList [][3]string
+	var dList [][4]string
 	if rows == nil {
 		return dList
 	}
 	for rows.Next() {
-		var temp [3]string
-		rows.Scan(&temp[0], &temp[1], &temp[2])
+		var temp [4]string
+		rows.Scan(&temp[0], &temp[1], &temp[2], &temp[3])
 		dList = append(dList, temp)
 	}
 	return dList
 }
 
-func Insert(devicename string, entityid string, roomid string) error {
-	sql := "INSERT INTO deviceinfo (devicename, entityid, roomid) VALUES (?, ?, ?)"
-	_, err := mydb.Exec(sql, devicename, entityid, roomid)
+func Insert(devicename string, entityid string, roomid string, url string) error {
+	sql := "INSERT INTO deviceinfo (devicename, entityid, roomid, url) VALUES (?, ?, ?, ?)"
+	_, err := mydb.Exec(sql, devicename, entityid, roomid, url)
 	return err
 }
 
@@ -82,5 +82,11 @@ func UpdateDeviceUrl(deviceid,deviceurl string)bool{
 func UpdateNameById(id string, name string) error {
 	sql := "UPDATE deviceinfo set devicename=? where deviceid=? "
 	_, err := mydb.Exec(sql, name, id)
+	return err
+}
+
+func Delete(id string) error {
+	sql := "DELETE FROM deviceinfo WHERE deviceid = ?"
+	_, err := mydb.Exec(sql, id)
 	return err
 }

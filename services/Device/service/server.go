@@ -19,6 +19,7 @@ func LoadRouters() {
 	http.HandleFunc("/v1/devices/devicename", devicenameHandler)
 	http.HandleFunc("/v1/devices/url",urlHandler)
 	http.HandleFunc("/v1/devices", deviceInfoHandler)
+	http.HandleFunc("/v1/devices/delete", deleteDeviceHandler)
 }
 
 var HAaddr = "http://123.207.55.27:8125"
@@ -68,10 +69,11 @@ func getDeviceHandler(w http.ResponseWriter,req *http.Request) {
 		DeviceId string `json:"deviceId"`
 		DeviceName string `json:"deviceName"`
 		EntityId string `json:"entityId"`
+		Url string `json:"url"`
 	}
 	result := make([]device, 0)
 	for i := 0; i < l; i++ {
-		temp := device{devices[i][0], devices[i][1], devices[i][2]}
+		temp := device{devices[i][0], devices[i][1], devices[i][2], devices[i][3]}
 		result = append(result, temp)
 	}
 	data, _ := json.Marshal(result)
@@ -86,8 +88,9 @@ func postDeviceHandler(w http.ResponseWriter,req *http.Request) {
 	eid := device["entityId"].(string)
 	name := device["deviceName"].(string)
 	rid := device["roomId"].(string)
+	url := device["url"].(string)
 
-	err, deviceid := entities.AddDevice(name, eid, rid)
+	err, deviceid := entities.AddDevice(name, eid, rid, url)
 	check(err)
 	if err == nil {
 		data := struct{
@@ -214,6 +217,20 @@ func availableHandler(w http.ResponseWriter,r *http.Request){
 	}
 	data, _ :=json.Marshal(re)
 	fmt.Fprint(w, string(data))
+}
+
+func deleteDeviceHandler(w http.ResponseWriter,req *http.Request) {
+	req.ParseForm()
+	var device map[string]interface{}
+	body, _ := ioutil.ReadAll(req.Body)
+	json.Unmarshal(body, &device)
+	id := device["deviceId"].(string)
+	err := entities.DeleteDevice(id)
+	if err == nil {
+		w.WriteHeader(http.StatusAccepted)
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
+	}
 }
 
 func check(err error) {
