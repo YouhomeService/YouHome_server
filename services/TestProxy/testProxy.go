@@ -8,8 +8,8 @@ import (
 	"encoding/json"
 	"crypto/tls"
 )
-//var address string = "http://localhost:9092"
-var address string = "https://123.207.55.27"
+var address string = "http://localhost:9093"
+//var address string = "https://123.207.55.27"
 var tr = &http.Transport{
 	TLSClientConfig:    &tls.Config{InsecureSkipVerify: true},
 }
@@ -186,11 +186,12 @@ func updateDeviceName(deviceId,deviceName string){
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
 }
-func addRoom(userId,roomName string){
+func addRoom(userId,roomName,url string){
 	temp := struct {
 		UserId string `json:"userId"`
 		RoomId string `json:"roomName"`
-	}{userId,roomName}
+		Url string `json:"url"`
+	}{userId,roomName,url}
 	buf,err := json.Marshal(temp)
 	checkErr(err)
 	resp, err := client.Post(address + "/v1/rooms","application/json",bytes.NewBuffer(buf))
@@ -270,8 +271,8 @@ func main() {
 	//updateDeviceUrl("1","https://s7.postimg.cc/xdytxcbm3/image.jpg")
 	//getDeviceUrl("1")
 	//deleteRoom("2")
-	//addRoom("1533","Room1234")
-	//getAllRooms("1533")
+	//addRoom("1533","Room14","1234")
+	getAllRooms("1533")
 	//getDeviceState("3")
 	//updateDeviceState("4","turn_off")
 	//addDevice("abc","21","efg")

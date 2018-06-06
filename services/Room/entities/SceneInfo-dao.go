@@ -2,20 +2,21 @@ package entities
 
 import "encoding/json"
 
-func AddRoom(roomName string, userId string) error {
-	sql := "INSERT INTO room (roomName, userId) VALUES (?, ?)"
-	_, err := mydb.Exec(sql, roomName, userId)
+func AddRoom(roomName , userId,roomUrl string) error {
+	sql := "INSERT INTO room (roomName, userId,url) VALUES (?, ?,?)"
+	_, err := mydb.Exec(sql, roomName, userId,roomUrl)
 	return err
 }
 
 func GetRooms(Userid string) string {
-	sql := "SELECT roomId,roomName FROM room WHERE userId = ?"
+	sql := "SELECT roomId,roomName,url FROM room WHERE userId = ?"
 	rows, err := mydb.Query(sql, Userid)
 	checkErr(err)
 
 	type Fat struct {
 		RoomId string `json:"roomId"`
 		RoomName string `json:"roomName"`
+		Url string `json:"url"`
 	}
 	var temp Fat
 	result := make([]Fat, 0)
@@ -23,7 +24,7 @@ func GetRooms(Userid string) string {
 		return ""
 	}
 	for rows.Next() {
-		rows.Scan(&temp.RoomId,&temp.RoomName)
+		rows.Scan(&temp.RoomId,&temp.RoomName,&temp.Url)
 		checkErr(err)
 		result = append(result,temp)
 	}

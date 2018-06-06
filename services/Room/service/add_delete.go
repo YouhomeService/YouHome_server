@@ -18,9 +18,10 @@ func addRooms(w http.ResponseWriter,r *http.Request){
 
 	userId := user["userId"].(string)
 	roomName := user["roomName"].(string)
-	fmt.Println(roomName,userId)
+	roomUrl := user["url"].(string)
+	fmt.Println(roomName,userId,roomUrl)
 
-	err := entities.AddRoom(roomName, userId)
+	err := entities.AddRoom(roomName, userId,roomUrl)
 	checkErr(err)
 	roomId := entities.GetRoomId(roomName,userId)
 	fmt.Fprint(w, roomId)
