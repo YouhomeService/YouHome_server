@@ -18,7 +18,7 @@ func wxuploadHandler(w http.ResponseWriter,req *http.Request) {
 
 
 	//调用bash，使得sample.silk转化成sample.wav
-	cmd := exec.Command("sh", "../decoder/converter.sh")
+	cmd := exec.Command("sh", "../decoder/converter.sh sample.slk wav")
 
 
 	//调用xunfei.go中的Xunfeiapi()函数，得到一个识别的字符串
