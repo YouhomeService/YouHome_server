@@ -82,6 +82,7 @@ func postUserInfoHandler(w http.ResponseWriter,req *http.Request) {
 	}
 
 	openId := u["openid"].(string)
+	session_key := u["session_key"].(string)
 
 	err = entities.Login(openId)
 
