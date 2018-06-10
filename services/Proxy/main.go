@@ -20,10 +20,11 @@ var roomService = "localhost:9093"
 
 func checkLogin (req *http.Request) bool {
 	headers := req.Header;
-	if (len(headers["Authorization"]) == 0) {
-		return false;
+	value, existed := headers["Authorization"]
+	if (existed && len(value) != 0 && value[0] != "") {
+		return true;
 	}
-	return true;
+	return false;
 }
 
 func NewMultipleHostsReverseProxy() *httputil.ReverseProxy {
