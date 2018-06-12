@@ -69,7 +69,7 @@ func httpPost(url string,headers map[string]string,body []byte)(result string){
                 Transport: &http.Transport{
                         Dial: func(netw, addr string) (net.Conn, error) {
                                 deadline := time.Now().Add(time.Duration(10000) * time.Millisecond)
-                                c, err := net.DialTimeout(netw, addr, time.Duration(TIMEOUT)*time.Millisecond)
+                                c, err := net.DialTimeout(netw, addr, time.Duration(10000)*time.Millisecond)
                                 if err != nil {
                                         return nil, err
                                 }
