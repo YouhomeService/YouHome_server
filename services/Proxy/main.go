@@ -18,8 +18,18 @@ var deviceService ="localhost:9092"
 var roomService = "localhost:9093"
  */
 
+func checkLogin (req *http.Request) bool {
+	headers := req.Header;
+	value, existed := headers["Authorization"]
+	if (existed && len(value) != 0 && value[0] != "") {
+		return true;
+	}
+	return false;
+}
+
 func NewMultipleHostsReverseProxy() *httputil.ReverseProxy {
 	director := func(req *http.Request) {
+		hasLogged := checkLogin()
 		req.URL.Scheme = "http"
 		//req.URL.Path = target.Path
 		path := req.URL.Path
