@@ -10,6 +10,7 @@ import (
 	"strings"
 	"net/url"
 	"github.com/tidwall/gjson"
+	"time"
 )
 
 func LoadRouters() {
@@ -20,6 +21,7 @@ func LoadRouters() {
 	http.HandleFunc("/v1/devices/url",urlHandler)
 	http.HandleFunc("/v1/devices", deviceInfoHandler)
 	http.HandleFunc("/v1/devices/delete", deleteDeviceHandler)
+	http.HandleFunc("/v1/devices/history", historyHandler)
 }
 
 var HAaddr = "http://123.207.55.27:8125"
@@ -231,6 +233,20 @@ func deleteDeviceHandler(w http.ResponseWriter,req *http.Request) {
 	} else {
 		w.WriteHeader(http.StatusBadRequest)
 	}
+}
+
+func historyHandler(w http.ResponseWriter,req *http.Request) {
+	fmt.Println("history")
+	id := req.FormValue("deviceId")
+	entityId := entities.GetEntityId(id)
+	haIP := "http://123.207.55.27:8125"
+	//http://localhost:8123/api/history/period/2016-12-29T00:00:00+02:00
+	d, _ := time.ParseDuration("-24h")
+	t:= time.Now().Add(d).Format("2006-01-02T15:04:05+08:00")
+	res, err := http.Get(haIP+"/api/history/period/"+t+"?filter_entity_id="+entityId)
+	check(err)
+	body, _ := ioutil.ReadAll(res.Body)
+	fmt.Fprintln(w, string(body))
 }
 
 func check(err error) {

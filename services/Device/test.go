@@ -1,11 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"net/http"
-	"bytes"
-	"fmt"
 	"io/ioutil"
+	"fmt"
 )
 
 func main() {
@@ -18,7 +16,7 @@ func main() {
 	//entityId := "light.gateway_light_7811dce1bbf3"
 	//res1, err1 := http.Get("http://127.0.0.1:9092/v1/devices?sceneId=1")
 	//res1, err1 := http.Get("http://127.0.0.1:9092/v1/devices/states?deviceId=4")
-
+/*
 	data := struct {
 		DeviceId string `json:"deviceId"`
 	} {"15"}
@@ -34,6 +32,7 @@ func main() {
 	}
 	body, _ := ioutil.ReadAll(res1.Body)
 	fmt.Println(string(body))
+*/
 /*
 	data := struct {
 		EntityId string `json:"entityId"`
@@ -55,10 +54,15 @@ func main() {
 	body, _ := ioutil.ReadAll(res1.Body)
 	fmt.Println(string(body))
 	 // /v1/devices?sceneId=abc
-*/
-	res1, _ = http.Get("http://127.0.0.1:9092/v1/devices?roomId=1")
+	*/
+	res1, _ := http.Get("http://127.0.0.1:9092/v1/devices?roomId=1")
 
 	body1, _ := ioutil.ReadAll(res1.Body)
+	fmt.Println(string(body1))
+
+	res1, _ = http.Get("http://127.0.0.1:9092/v1/devices/history?deviceId=1")
+
+	body1, _ = ioutil.ReadAll(res1.Body)
 	fmt.Println(string(body1))
 
 }
