@@ -29,7 +29,7 @@ func checkLogin (req *http.Request) bool {
 
 func NewMultipleHostsReverseProxy() *httputil.ReverseProxy {
 	director := func(req *http.Request) {
-		hasLogged := checkLogin()
+		//hasLogged := checkLogin()
 		req.URL.Scheme = "http"
 		//req.URL.Path = target.Path
 		path := req.URL.Path
@@ -54,7 +54,7 @@ func NewMultipleHostsReverseProxy() *httputil.ReverseProxy {
 
 func main() {
 	proxy := NewMultipleHostsReverseProxy()
-	err :=http.ListenAndServeTLS(":443", "license/cert.pem","license/key.pem",proxy)
+	err :=http.ListenAndServeTLS(":443", "license/_youhome.xyz_bundle.crt","license/2_youhome.xyz.key",proxy)
 	if err != nil{
 		fmt.Println(err)
 	}
