@@ -1,9 +1,11 @@
+"use strict"
 // 获取express对象
 const express = require("express");
 // 服务器对象
 const app = express();
 const fs = require("fs");
 var http = require('http');
+var https = require('https');
 const Multiparty = require('multiparty');
 // 用于调用ffmpeg
 const ffmpeg = require("fluent-ffmpeg");
@@ -101,8 +103,15 @@ let xf_recogn = function (filePath, httpRes) {
   req.end();
 }
 
-var server = app.listen(3005, () => {
-  let port = server.address().port;
-  let address = server.address().address;
-  console.log(`服务开启成功 ${address} ${port}`);
+var httpsServer = https.createServer({
+  key: fs.readFileSync('./2_youhome.xyz.key', 'utf8'),
+  cert: fs.readFileSync('./1_youhome.xyz_bundle.crt', 'utf8')
+},app).listen(3005, function() {
+  console.log("HTTPS Server is running on: https://localhost:%s",3005)
+});
+
+app.get('/:name', function(req, res) {
+  if(req.protocol === 'https') {
+      res.send('https:' + req.params.name);
+  }
 });
