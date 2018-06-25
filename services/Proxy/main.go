@@ -6,6 +6,7 @@ import (
 	"strings"
 	"fmt"
 )
+var voiceService = "172.22.16.6:3005"
 
 var userService = "172.22.16.5:9091"
 var deviceService ="172.22.16.4:9092"
@@ -42,6 +43,8 @@ func NewMultipleHostsReverseProxy() *httputil.ReverseProxy {
 			req.URL.Host = roomService
 		case "devices":
 			req.URL.Host = deviceService
+		case "voice":
+			req.URL.Host = voiceService
 		}
 
 		fmt.Println(req.URL.Scheme)
